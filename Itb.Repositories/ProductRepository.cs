@@ -1,19 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Itb.Shared;
+using Dapper;
 
 namespace Itb.Repositories
 {
 	public class ProductRepository : IProductRepository
 	{
-		int IProductRepository.CreateProduct(Product prod)
+		private readonly IDbConnection _conn;
+
+		public ProductRepository(IDbConnection conn)
 		{
-			throw new NotImplementedException();
+			_conn = conn;
+		}
+
+		int IProductRepository.AddProduct(Product prod)
+		{
+			using (var conn = _conn)
+			{
+				conn.Open();
+				return conn.Execute("INSERT INTO product (Name) VALUES (@Name)", prod);
+			}
 		}
 
 		int IProductRepository.DeleteProduct(int id)
 		{
-			throw new NotImplementedException();
+			using (var conn = _conn)
+			{
+				conn.Open();
+				return conn.Execute("DELETE FROM product WHERE ProductId = @Id", id);
+			}
+		}
+
+		int IProductRepository.UpdateProduct(Product prod)
+		{
+			using (var conn = _conn)
+			{
+				conn.Open();
+				return conn.Execute("UPDATE product SET Name = @Name WHERE ProductId = @Id", id);
+			}
 		}
 
 		Product IProductRepository.GetProduct(int id)

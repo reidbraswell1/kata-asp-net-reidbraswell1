@@ -289,3 +289,4 @@ __pycache__/
 
 # RB
 .vscode
+dos2unix.exe

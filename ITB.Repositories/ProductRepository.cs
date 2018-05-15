@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Data;
 using System.Linq;
 using Itb.Shared;
@@ -52,12 +53,12 @@ namespace Itb.Repositories
 			}
 		}
 
-		IEnumerable<Product> IProductRepository.GetProducts()
+		Task<IEnumerable<Product>> IProductRepository.GetProducts()
 		{
 			using (var conn = _conn)
 			{
 				conn.Open();
-				return conn.Query<Product>("SELECT *, ProductId as Id");
+				return conn.QueryAsync<Product>("SELECT *, ProductId as Id");
 			}
 		}
 	}

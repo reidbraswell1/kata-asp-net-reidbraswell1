@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Itb.Shared;
 using Dapper;
 
@@ -29,7 +30,7 @@ namespace Itb.Repositories
 			using (var conn = _conn)
 			{
 				conn.Open();
-				return conn.Execute("DELETE FROM product WHERE ProductId = @Id", id);
+				return conn.Execute("DELETE FROM product WHERE ProductId = @Id", new { id });
 			}
 		}
 
@@ -38,23 +39,26 @@ namespace Itb.Repositories
 			using (var conn = _conn)
 			{
 				conn.Open();
-				return conn.Execute("UPDATE product SET Name = @Name WHERE ProductId = @Id", id);
+				return conn.Execute("UPDATE product SET Name = @Name WHERE ProductId = @Id", prod);
 			}
 		}
 
 		Product IProductRepository.GetProduct(int id)
 		{
-			throw new NotImplementedException();
+			using (var conn = _conn)
+			{
+				conn.Open();
+				return conn.Query<Product>("SELECT *, ProductId as Id WHERE ProductId = @Id", new { id }).FirstOrDefault();
+			}
 		}
 
 		IEnumerable<Product> IProductRepository.GetProducts()
 		{
-			throw new NotImplementedException();
-		}
-
-		int IProductRepository.UpdateProduct(Product prod)
-		{
-			throw new NotImplementedException();
+			using (var conn = _conn)
+			{
+				conn.Open();
+				return conn.Query<Product>("SELECT *, ProductId as Id");
+			}
 		}
 	}
 }

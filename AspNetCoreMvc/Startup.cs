@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
-using Itb.Shared;
-using Itb.Repositories;
+using ITB.Shared;
+using ITB.Repositories;
 
 namespace AspNetCoreMvc
 {

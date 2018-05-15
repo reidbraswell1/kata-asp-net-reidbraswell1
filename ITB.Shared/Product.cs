@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Itb.Shared
+namespace ITB.Shared
 {
     public class Product
     {

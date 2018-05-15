@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Itb.Shared;
+using ITB.Shared;
 
 namespace AspNetCoreMvc.Controllers
 {
@@ -17,16 +17,17 @@ namespace AspNetCoreMvc.Controllers
             _prodRepo = prodRepo;
         }
         // GET: Product
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var products = _prodRepo.GetProducts();
+            var products = await _prodRepo.GetProducts();
             return View(products);
         }
 
         // GET: Product/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var prod = _prodRepo.GetProduct(id);
+            return View(prod);
         }
 
         // GET: Product/Create
@@ -43,6 +44,8 @@ namespace AspNetCoreMvc.Controllers
         {
             try
             {
+                var prod = new Product { Name=collection["Name"] };
+                _prodRepo.AddProduct(prod);
                 // TODO: Add insert logic here
 
                 return RedirectToAction(nameof(Index));
@@ -56,6 +59,7 @@ namespace AspNetCoreMvc.Controllers
         // GET: Product/Edit/5
         public ActionResult Edit(int id)
         {
+            //var prod = _prodRepo.GetProduct(id);
             return View();
         }
 
@@ -66,6 +70,9 @@ namespace AspNetCoreMvc.Controllers
         {
             try
             {
+                var name = collection["Name"];
+                Product prod = new Product { Id = id, Name = name };
+                _prodRepo.UpdateProduct(prod);
                 // TODO: Add update logic here
 
                 return RedirectToAction(nameof(Index));
@@ -79,7 +86,11 @@ namespace AspNetCoreMvc.Controllers
         // GET: Product/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var prod = _prodRepo.GetProduct(id);
+            //var prodAsp = new AspNetCoreMvc.Models.Product();
+            //prodAsp.Id = id;
+            //prodAsp.Name = prod.Name;
+            return View(prod);
         }
 
         // POST: Product/Delete/5
@@ -90,7 +101,11 @@ namespace AspNetCoreMvc.Controllers
             try
             {
                 // TODO: Add delete logic here
-
+                var rowsAffected = _prodRepo.DeleteProduct(id);
+                if(rowsAffected <= 0)
+                {
+                    throw new Exception();
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch

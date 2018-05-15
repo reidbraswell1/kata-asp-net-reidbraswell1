@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Data;
 using System.Linq;
-using Itb.Shared;
+using ITB.Shared;
 using Dapper;
 
-namespace Itb.Repositories
+namespace ITB.Repositories
 {
 	public class ProductRepository : IProductRepository
 	{
@@ -17,7 +17,7 @@ namespace Itb.Repositories
 			_conn = conn;
 		}
 
-		int IProductRepository.AddProduct(Product prod)
+		public int AddProduct(Product prod)
 		{
 			using (var conn = _conn)
 			{
@@ -26,7 +26,7 @@ namespace Itb.Repositories
 			}
 		}
 
-		int IProductRepository.DeleteProduct(int id)
+		public int DeleteProduct(int id)
 		{
 			using (var conn = _conn)
 			{
@@ -35,7 +35,7 @@ namespace Itb.Repositories
 			}
 		}
 
-		int IProductRepository.UpdateProduct(Product prod)
+		public int UpdateProduct(Product prod)
 		{
 			using (var conn = _conn)
 			{
@@ -44,21 +44,21 @@ namespace Itb.Repositories
 			}
 		}
 
-		Product IProductRepository.GetProduct(int id)
+		public Product GetProduct(int id)
 		{
 			using (var conn = _conn)
 			{
 				conn.Open();
-				return conn.Query<Product>("SELECT *, ProductId as Id WHERE ProductId = @Id", new { id }).FirstOrDefault();
+				return conn.Query<Product>("SELECT *, ProductId as Id FROM product WHERE ProductId = @Id", new { id }).FirstOrDefault();
 			}
 		}
 
-		Task<IEnumerable<Product>> IProductRepository.GetProducts()
+		public Task<IEnumerable<Product>> GetProducts()
 		{
 			using (var conn = _conn)
 			{
 				conn.Open();
-				return conn.QueryAsync<Product>("SELECT *, ProductId as Id");
+				return conn.QueryAsync<Product>("SELECT *, ProductId as Id FROM product");
 			}
 		}
 	}

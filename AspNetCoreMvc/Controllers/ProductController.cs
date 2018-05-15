@@ -4,15 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Itb.Shared;
 
 namespace AspNetCoreMvc.Controllers
 {
     public class ProductController : Controller
     {
+        private readonly IProductRepository _prodRepo;
+
+        public ProductController(IProductRepository prodRepo)
+        {
+            _prodRepo = prodRepo;
+        }
         // GET: Product
         public ActionResult Index()
         {
-            return View();
+            var products = _prodRepo.GetProducts();
+            return View(products);
         }
 
         // GET: Product/Details/5
@@ -24,6 +32,7 @@ namespace AspNetCoreMvc.Controllers
         // GET: Product/Create
         public ActionResult Create()
         {
+            //_prodRepo.AddProduct(prod);
             return View();
         }
 

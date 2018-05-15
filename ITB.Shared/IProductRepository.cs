@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace ITB.Shared
+namespace Itb.Shared
 {
-	interface IProductRepository
-	{
+    public interface IProductRepository
+    {
 		IEnumerable<Product> GetProducts();
 		Product GetProduct(int id);
-		bool DeleteProduct(int id);
-		bool UpdateProduct(Product prod);
-		bool InsertProduct(Product prod);
-
-	}
+		int DeleteProduct(int id);
+		int UpdateProduct(Product prod);
+		int CreateProduct(Product prod);
+    }
 }

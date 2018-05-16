@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ITB.Shared;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,11 +13,27 @@ namespace AspNetCoreMvc.Controllers
     [Route("api/[controller]")]
     public class ProductApiController : Controller
     {
+        private readonly IProductRepository _prodRepo;
+        public ProductApiController(IProductRepository prodRepo)
+        {
+            _prodRepo = prodRepo;
+        }
+
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var products = await _prodRepo.GetProducts();
+            string[] s = new string[products.LongCount() + 2];
+            var i = 0;
+            s[i]="[";
+            i++;
+            foreach (var item in products)
+            {
+                s[i++] = $"{{ProductId:{item.Id.ToString()},Name:{item.Name}}},";
+            }
+            s[i]="]";
+            return s;
         }
 
         // GET api/<controller>/5

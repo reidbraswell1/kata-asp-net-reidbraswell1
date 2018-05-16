@@ -57,9 +57,8 @@ namespace AspNetCoreMvc.Controllers
         }
 
         // GET: Product/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, string name)
         {
-            //var prod = _prodRepo.GetProduct(id);
             return View();
         }
 

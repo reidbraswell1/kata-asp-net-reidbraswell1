@@ -58,7 +58,7 @@ namespace ITB.Repositories
 			using (var conn = _conn)
 			{
 				conn.Open();
-				return conn.QueryAsync<Product>("SELECT *, ProductId as Id FROM product");
+				return conn.QueryAsync<Product>("SELECT *, ProductId as Id FROM product ORDER BY Id DESC");
 			}
 		}
 	}

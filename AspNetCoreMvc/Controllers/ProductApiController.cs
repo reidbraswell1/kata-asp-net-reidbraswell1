@@ -24,15 +24,12 @@ namespace AspNetCoreMvc.Controllers
         public async Task<IEnumerable<string>> Get()
         {
             var products = await _prodRepo.GetProducts();
-            string[] s = new string[products.LongCount() + 2];
+            string[] s = new string[products.LongCount()];
             var i = 0;
-            s[i]="[";
-            i++;
             foreach (var item in products)
             {
-                s[i++] = $"{{ProductId:{item.Id.ToString()},Name:{item.Name}}},";
+                s[i++] = $"ProductId:{item.Id.ToString()},Name:{item.Name}";
             }
-            s[i]="]";
             return s;
         }
 

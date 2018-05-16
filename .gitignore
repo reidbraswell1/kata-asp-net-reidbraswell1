@@ -290,5 +290,10 @@ __pycache__/
 # RB
 .vscode
 dos2unix.exe
-*.development.json
+*/appsettings.Development.json
+*/appsettings.development.json
+*/appsettings.Staging.json
+*/appsettings.staging.json
+*/appsettings.Production.json
+*/appsettings.production.json
 *.sln

@@ -22,23 +22,17 @@ namespace AspNetCoreMvc.Controllers
 
         // GET: api/<controller>
         [HttpGet]
-        public async Task<IEnumerable<string>> Get([FromQuery] int id)
+        public async Task<IEnumerable<Product>> Get([FromQuery] int id)
         {
             if (id == 0)
             {
                 var products = await _prodRepo.GetProducts();
-                string[] s = new string[products.LongCount()];
-                var i = 0;
-                foreach (var item in products)
-                {
-                    s[i++] = $"ProductId:{item.Id.ToString()},Name:{item.Name}";
-                }
-                return s;
+                return products;
             }
             else
             {
-                var product = _prodRepo.GetProduct(id);
-                return (product == null) ? new string[0] { } : new string[] { $"ProductId:{product.Id.ToString()},Name:{product.Name}" };
+                var product = await _prodRepo.GetProduct(id);
+                return product;
             }
         }
         /* 
@@ -83,7 +77,7 @@ namespace AspNetCoreMvc.Controllers
             var responseError = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             var responseOk = new HttpResponseMessage(HttpStatusCode.OK);
 
-            if (id == 0 || name == null)
+            if (id == 0 || string.IsNullOrEmpty(name))
             {
                 responseError.ReasonPhrase = $"ProductId:{id} is Zero or Name is Null";
                 return responseError;
